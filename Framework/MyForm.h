@@ -77,6 +77,8 @@ namespace Framework {
 
 
 	private: System::Windows::Forms::Button^  laplacian;
+	private: System::Windows::Forms::Button^  histo;
+	private: System::Windows::Forms::Button^  button2;
 
 	private: System::Windows::Forms::RadioButton^  left;
 
@@ -107,6 +109,8 @@ namespace Framework {
 			this->sobel = (gcnew System::Windows::Forms::Button());
 			this->canny = (gcnew System::Windows::Forms::Button());
 			this->laplacian = (gcnew System::Windows::Forms::Button());
+			this->histo = (gcnew System::Windows::Forms::Button());
+			this->button2 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->inputPic))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->outputPic))->BeginInit();
 			this->groupBox->SuspendLayout();
@@ -114,7 +118,7 @@ namespace Framework {
 			// 
 			// open
 			// 
-			this->open->Location = System::Drawing::Point(149, 557);
+			this->open->Location = System::Drawing::Point(105, 558);
 			this->open->Name = L"open";
 			this->open->Size = System::Drawing::Size(88, 31);
 			this->open->TabIndex = 0;
@@ -142,11 +146,11 @@ namespace Framework {
 			// 
 			// histogram
 			// 
-			this->histogram->Location = System::Drawing::Point(291, 559);
+			this->histogram->Location = System::Drawing::Point(246, 559);
 			this->histogram->Name = L"histogram";
-			this->histogram->Size = System::Drawing::Size(89, 29);
+			this->histogram->Size = System::Drawing::Size(121, 29);
 			this->histogram->TabIndex = 3;
-			this->histogram->Text = L"histogram";
+			this->histogram->Text = L"Color Histogram";
 			this->histogram->UseVisualStyleBackColor = true;
 			this->histogram->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
@@ -154,9 +158,9 @@ namespace Framework {
 			// 
 			this->grayHisto->Location = System::Drawing::Point(893, 557);
 			this->grayHisto->Name = L"grayHisto";
-			this->grayHisto->Size = System::Drawing::Size(86, 31);
+			this->grayHisto->Size = System::Drawing::Size(108, 31);
 			this->grayHisto->TabIndex = 4;
-			this->grayHisto->Text = L"histogram";
+			this->grayHisto->Text = L"Color histogram";
 			this->grayHisto->UseVisualStyleBackColor = true;
 			this->grayHisto->Click += gcnew System::EventHandler(this, &MyForm::grayHisto_Click);
 			// 
@@ -302,11 +306,33 @@ namespace Framework {
 			this->laplacian->UseVisualStyleBackColor = true;
 			this->laplacian->Click += gcnew System::EventHandler(this, &MyForm::laplacian_Click);
 			// 
+			// histo
+			// 
+			this->histo->Location = System::Drawing::Point(403, 561);
+			this->histo->Name = L"histo";
+			this->histo->Size = System::Drawing::Size(108, 28);
+			this->histo->TabIndex = 17;
+			this->histo->Text = L"rgb Histogram";
+			this->histo->UseVisualStyleBackColor = true;
+			this->histo->Click += gcnew System::EventHandler(this, &MyForm::histo_Click);
+			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(748, 557);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(112, 32);
+			this->button2->TabIndex = 18;
+			this->button2->Text = L"rgb Histogram";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1213, 600);
+			this->Controls->Add(this->button2);
+			this->Controls->Add(this->histo);
 			this->Controls->Add(this->laplacian);
 			this->Controls->Add(this->canny);
 			this->Controls->Add(this->sobel);
@@ -391,7 +417,6 @@ namespace Framework {
 	}
 			 // gray scale image
 	private: System::Void grayScale_Click(System::Object^  sender, System::EventArgs^  e) {
-		Graphics^ graphics;
 		Mat temp;
 		cv::cvtColor((*src), temp, COLOR_BGR2GRAY);
 		gray = new Mat(temp);
@@ -620,6 +645,114 @@ private: System::Void gaussianB_Click(System::Object^  sender, System::EventArgs
 	GaussianBlur((*src), temp, cv::Size(3, 3), 0, 0, BORDER_DEFAULT);
 	gaussPic = new Mat(temp);
 	showGray(gaussPic, 2);
+}
+private: System::Void histo_Click(System::Object^  sender, System::EventArgs^  e) {
+
+	
+
+	// allcoate memory for no of pixels for each intensity value
+	int histogram[256];
+
+	// initialize all intensity values to 0
+	for (int i = 0; i < 255; i++)
+	{
+		histogram[i] = 0;
+	}
+
+	// calculate the no of pixels for each intensity values
+	for (int y = 0; y < leftPic->rows; y++)
+		for (int x = 0; x < leftPic->cols; x++)
+			histogram[(int)leftPic->at<uchar>(y, x)]++;
+
+	for (int i = 0; i < 256; i++)
+		cout << histogram[i] << " ";
+
+	// draw the histograms
+	int hist_w = 512; int hist_h = 400;
+	int bin_w = cvRound((double)hist_w / 256);
+
+	Mat histImage(hist_h, hist_w, CV_8UC1, Scalar(255, 255, 255));
+
+	// find the maximum intensity element from histogram
+	int max = histogram[0];
+	for (int i = 1; i < 256; i++) {
+		if (max < histogram[i]) {
+			max = histogram[i];
+		}
+	}
+
+	// normalize the histogram between 0 and histImage.rows
+
+	for (int i = 0; i < 255; i++) {
+		histogram[i] = ((double)histogram[i] / max)*histImage.rows;
+	}
+
+
+	// draw the intensity line for histogram
+	for (int i = 0; i < 255; i++)
+	{
+		line(histImage, cv::Point(bin_w*(i), hist_h),
+			cv::Point(bin_w*(i), hist_h - histogram[i]),
+			Scalar(0, 0, 0), 1, 8, 0);
+	}
+
+	// display histogram
+	namedWindow("Intensity Histogram", CV_WINDOW_AUTOSIZE);
+	imshow("Intensity Histogram", histImage);
+
+}
+private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+
+	// allcoate memory for no of pixels for each intensity value
+	int histogram[256];
+
+	// initialize all intensity values to 0
+	for (int i = 0; i < 255; i++)
+	{
+		histogram[i] = 0;
+	}
+
+	// calculate the no of pixels for each intensity values
+	for (int y = 0; y < rightPic->rows; y++)
+		for (int x = 0; x < rightPic->cols; x++)
+			histogram[(int)rightPic->at<uchar>(y, x)]++;
+
+	for (int i = 0; i < 256; i++)
+		cout << histogram[i] << " ";
+
+	// draw the histograms
+	int hist_w = 512; int hist_h = 400;
+	int bin_w = cvRound((double)hist_w / 256);
+
+	Mat histImage(hist_h, hist_w, CV_8UC1, Scalar(255, 255, 255));
+
+	// find the maximum intensity element from histogram
+	int max = histogram[0];
+	for (int i = 1; i < 256; i++) {
+		if (max < histogram[i]) {
+			max = histogram[i];
+		}
+	}
+
+	// normalize the histogram between 0 and histImage.rows
+
+	for (int i = 0; i < 255; i++) {
+		histogram[i] = ((double)histogram[i] / max)*histImage.rows;
+	}
+
+
+	// draw the intensity line for histogram
+	for (int i = 0; i < 255; i++)
+	{
+		line(histImage, cv::Point(bin_w*(i), hist_h),
+			cv::Point(bin_w*(i), hist_h - histogram[i]),
+			Scalar(0, 0, 0), 1, 8, 0);
+	}
+
+	// display histogram
+	namedWindow("Intensity Histogram", CV_WINDOW_AUTOSIZE);
+	imshow("Intensity Histogram", histImage);
+
 }
 };
 }
