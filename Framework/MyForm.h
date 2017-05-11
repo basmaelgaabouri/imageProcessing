@@ -79,6 +79,7 @@ namespace Framework {
 	private: System::Windows::Forms::Button^  laplacian;
 	private: System::Windows::Forms::Button^  histo;
 	private: System::Windows::Forms::Button^  button2;
+	private: System::Windows::Forms::Button^  button3;
 
 	private: System::Windows::Forms::RadioButton^  left;
 
@@ -111,6 +112,7 @@ namespace Framework {
 			this->laplacian = (gcnew System::Windows::Forms::Button());
 			this->histo = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
+			this->button3 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->inputPic))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->outputPic))->BeginInit();
 			this->groupBox->SuspendLayout();
@@ -248,7 +250,7 @@ namespace Framework {
 			// 
 			// blur
 			// 
-			this->blur->Location = System::Drawing::Point(563, 197);
+			this->blur->Location = System::Drawing::Point(563, 192);
 			this->blur->Name = L"blur";
 			this->blur->Size = System::Drawing::Size(101, 29);
 			this->blur->TabIndex = 11;
@@ -258,7 +260,7 @@ namespace Framework {
 			// 
 			// medianB
 			// 
-			this->medianB->Location = System::Drawing::Point(563, 249);
+			this->medianB->Location = System::Drawing::Point(563, 238);
 			this->medianB->Name = L"medianB";
 			this->medianB->Size = System::Drawing::Size(101, 29);
 			this->medianB->TabIndex = 12;
@@ -268,7 +270,7 @@ namespace Framework {
 			// 
 			// gaussianB
 			// 
-			this->gaussianB->Location = System::Drawing::Point(563, 301);
+			this->gaussianB->Location = System::Drawing::Point(563, 284);
 			this->gaussianB->Name = L"gaussianB";
 			this->gaussianB->Size = System::Drawing::Size(101, 29);
 			this->gaussianB->TabIndex = 13;
@@ -278,7 +280,7 @@ namespace Framework {
 			// 
 			// sobel
 			// 
-			this->sobel->Location = System::Drawing::Point(563, 351);
+			this->sobel->Location = System::Drawing::Point(563, 333);
 			this->sobel->Name = L"sobel";
 			this->sobel->Size = System::Drawing::Size(101, 29);
 			this->sobel->TabIndex = 14;
@@ -288,7 +290,7 @@ namespace Framework {
 			// 
 			// canny
 			// 
-			this->canny->Location = System::Drawing::Point(563, 403);
+			this->canny->Location = System::Drawing::Point(563, 379);
 			this->canny->Name = L"canny";
 			this->canny->Size = System::Drawing::Size(101, 43);
 			this->canny->TabIndex = 15;
@@ -298,7 +300,7 @@ namespace Framework {
 			// 
 			// laplacian
 			// 
-			this->laplacian->Location = System::Drawing::Point(563, 469);
+			this->laplacian->Location = System::Drawing::Point(563, 488);
 			this->laplacian->Name = L"laplacian";
 			this->laplacian->Size = System::Drawing::Size(101, 29);
 			this->laplacian->TabIndex = 16;
@@ -326,11 +328,22 @@ namespace Framework {
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
+			// button3
+			// 
+			this->button3->Location = System::Drawing::Point(563, 438);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(101, 35);
+			this->button3->TabIndex = 19;
+			this->button3->Text = L"DOG";
+			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &MyForm::Dog_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1213, 600);
+			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
 			this->Controls->Add(this->histo);
 			this->Controls->Add(this->laplacian);
@@ -753,6 +766,23 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 	namedWindow("Intensity Histogram", CV_WINDOW_AUTOSIZE);
 	imshow("Intensity Histogram", histImage);
 
+}
+private: System::Void Dog_Click(System::Object^  sender, System::EventArgs^  e) {
+	Mat temp,src_gray, dst;
+	int kernel_size = 3;
+	int scale = 1;
+	int delta = 0;
+	int ddepth = CV_16S;
+
+	GaussianBlur((*src), temp, cv::Size(3, 3), 0, 0, BORDER_DEFAULT);
+	cvtColor(temp, src_gray, CV_BGR2GRAY);
+	/// Apply Laplace function
+	Mat abs_dst;
+	Laplacian(src_gray, dst, ddepth, kernel_size, scale, delta, BORDER_DEFAULT);
+	
+	convertScaleAbs(dst, abs_dst);
+
+	showGray(new Mat(abs_dst), 1);
 }
 };
 }

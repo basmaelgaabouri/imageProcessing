@@ -1,16 +1,16 @@
 ﻿  MyForm.cpp
-c:\users\sony\documents\visual studio 2015\projects\framework\framework\MyForm.h(490): warning C4101: 'graphics': unreferenced local variable
-c:\users\sony\documents\visual studio 2015\projects\framework\framework\MyForm.h(533): warning C4101: 'graphics': unreferenced local variable
-c:\users\sony\documents\visual studio 2015\projects\framework\framework\MyForm.h(554): warning C4101: 'graphics': unreferenced local variable
-c:\users\sony\documents\visual studio 2015\projects\framework\framework\MyForm.h(596): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-c:\users\sony\documents\visual studio 2015\projects\framework\framework\MyForm.h(632): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-c:\users\sony\documents\visual studio 2015\projects\framework\framework\MyForm.h(687): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\sony\documents\visual studio 2015\projects\framework\framework\MyForm.h(740): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\ilias\downloads\imageprocessing\framework\MyForm.h(503): warning C4101: 'graphics': unreferenced local variable
+c:\users\ilias\downloads\imageprocessing\framework\MyForm.h(546): warning C4101: 'graphics': unreferenced local variable
+c:\users\ilias\downloads\imageprocessing\framework\MyForm.h(567): warning C4101: 'graphics': unreferenced local variable
+c:\users\ilias\downloads\imageprocessing\framework\MyForm.h(609): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\users\ilias\downloads\imageprocessing\framework\MyForm.h(645): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\users\ilias\downloads\imageprocessing\framework\MyForm.h(700): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\ilias\downloads\imageprocessing\framework\MyForm.h(753): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 c:\opencv\build\include\opencv2\core\cvstd.hpp(596): warning C4793: 'cv::String::String': function compiled as native:
   	Found an intrinsic not supported in managed code
 c:\opencv\build\include\opencv2\core\mat.inl.hpp(413): warning C4793: 'cv::Mat::Mat': function compiled as native:
   	Found an intrinsic not supported in managed code
-c:\users\sony\documents\visual studio 2015\projects\framework\framework\myform.h(615): warning C4700: uninitialized local variable 'lowThreshold' used
+c:\users\ilias\downloads\imageprocessing\framework\myform.h(628): warning C4700: uninitialized local variable 'lowThreshold' used
 c:\opencv\build\include\opencv2\core\mat.inl.hpp(703): warning C4793: 'cv::Mat::release': function compiled as native:
   	Found an intrinsic not supported in managed code
 c:\opencv\build\include\opencv2\core\mat.inl.hpp(1929): warning C4793: 'cv::SparseMat::addref': function compiled as native:
@@ -29,6 +29,4 @@ c:\opencv\build\include\opencv2\core\fast_math.hpp(205): warning C4793: '`anonym
   	Found an intrinsic not supported in managed code
 c:\opencv\build\include\opencv2\core\fast_math.hpp(206): warning C4793: '`anonymous namespace'::cvRound': function compiled as native:
   	Found an intrinsic not supported in managed code
-  MyForm.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
-  Framework.vcxproj -> C:\Users\Sony\Documents\Visual Studio 2015\Projects\Framework\x64\Debug\Framework.exe
-  Framework.vcxproj -> C:\Users\Sony\Documents\Visual Studio 2015\Projects\Framework\x64\Debug\Framework.pdb (Partial PDB)
+  Framework.vcxproj -> C:\Users\Ilias\Downloads\imageProcessing\x64\Debug\Framework.exe
